@@ -1,0 +1,71 @@
+.appbarheader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  height: 5vh;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  background: #82bcec;
+  color: white;
+  font-size: 32px;
+}
+
+.appbarheader p {
+  font-size: 2rem;
+}
+
+.tableHeadCells {
+  font-weight: 700;
+}
+
+.tableHeadCells>* {
+  font-weight: 700;
+}
+
+#fabBox>* {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+#fabBoxMob>* {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+/* .edit-delete>span {
+  min-width: none !important;
+}
+
+.edit-delete>* {
+  padding-left: 0px;
+} */
+
+#tableRowSelected {
+  background-color: rgb(236, 235, 235);
+}
+
+#tableRow {
+  background-color: rgb(255, 255, 255);
+}
+
+#desktopButton>* {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+#mobileButton {
+  display: none;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @media (max-width: 768px) {
+    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
