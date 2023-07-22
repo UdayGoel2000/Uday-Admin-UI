@@ -1,4 +1,4 @@
-import UsersDetailsCard from "./components/usersDetailsCard";
+import UsersDetailsCard from "./components/UsersDetailsCard";
 import "./style.css";
 
 export default function App() {

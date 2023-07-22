@@ -1,8 +1,7 @@
 import { Box, TextField, InputAdornment } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
 
-export default function ({ value, changeValue }) {
-  // console.log(value);
+export default function SearchBar({ value, changeValue }) {
   return (
     <Box m={1}>
       <TextField

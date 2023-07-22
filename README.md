@@ -6,7 +6,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 npm install
-npm install @mui/material @emotion/react @emotion/styled
-npm install @mui/icons-material
-npm install axios
 npm start

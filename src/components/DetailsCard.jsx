@@ -5,7 +5,7 @@ import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
 import { Box, Button, ButtonGroup } from "@mui/material";
 
-export default function ({
+export default function DetailsCard({
   user,
   selected,
   HandleCheck,
