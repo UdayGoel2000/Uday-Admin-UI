@@ -4,7 +4,7 @@ This coding challenge is provided by geektrust.in, [click here to view the probl
 
 ## Deployment
 
-View deployed app here [uday-admin-uil](https://uday-admin-ui.netlify.app)
+View deployed app here [uday-admin-uil](https://uday-goel-admin-ui.netlify.app)
 
 ## Run Locally
 
