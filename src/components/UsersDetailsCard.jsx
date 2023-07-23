@@ -3,6 +3,7 @@ import axios from "axios";
 import AppBar from "./AppBar";
 import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 
 import DetailsCard from "./DetailsCard";
 import TableHeaderRows from "./TableHeaderRows";
@@ -40,6 +41,8 @@ const tableHeaders = [
 ];
 
 export default function UsersDetailsCard() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [selectedArray, setSelectedArray] = useState([]);
   const [apiData, setApiData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -106,7 +109,9 @@ export default function UsersDetailsCard() {
       );
       setApiData(res.data);
     } catch (err) {
-      console.log(err);
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     }
   };
 
@@ -117,6 +122,11 @@ export default function UsersDetailsCard() {
         name.toLowerCase().includes(text) ||
         role.toLowerCase().includes(text)
     );
+    if (!filetredUsers.length)
+      enqueueSnackbar("No result Found", {
+        variant: "warning",
+        autoHideDuration: 1000,
+      });
     pagenation(filetredUsers);
   };
 

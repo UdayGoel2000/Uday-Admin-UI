@@ -1,9 +1,35 @@
-# Getting Started with Create React App
+# Admin UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This coding challenge is provided by geektrust.in, [click here to view the problem statement](https://www.geektrust.com/coding/detailed/admin-ui).
 
-## Available Scripts
+## Deployment
 
-In the project directory, you can run:
-npm install
-npm start
+View deployed app here [uday-admin-uil](https://uday-admin-ui.netlify.app)
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/UdayGoel2000/Uday-Admin-UI.git
+```
+
+Go to the project directory
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server | NOTE: Server will start at default port 3000, [http://localhost:3000](http://localhost:3000)
+
+```bash
+  npm start
+```
+
+Test
+
+```bash
+  npm test
+```

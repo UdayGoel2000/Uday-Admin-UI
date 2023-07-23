@@ -35,7 +35,6 @@ export default function DetailsCard({
               startIcon={<EditNoteOutlinedIcon />}
               variant="text"
               onClick={() => {
-                // console.log("edit");
                 HandleEdit(user);
               }}
             />
