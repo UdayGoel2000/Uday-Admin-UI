@@ -4,19 +4,11 @@ import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 
-import { config } from "../App";
-import DetailsCard from "./DetailsCard";
-import TableHeaderRows from "./TableHeaderRows";
 import ActionButtons from "./ActionButtons";
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import UpdateUserModal from "./UpdateUserModal";
 import useFetch from "../hooks/useFetch";
+import RecordTable from "./RecordTable";
 
 const tableHeaders = [
   {
@@ -164,43 +156,19 @@ export default function UsersDetailsCard() {
     <Stack>
       <AppBar />
       <SearchBar value={searchText} changeValue={setSearchText} />
-      <TableContainer component={Paper} m={1}>
-        <Table size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              {tableHeaders.map(({ key, label }) => (
-                <TableHeaderRows
-                  key={key}
-                  headerKey={key}
-                  headerLabel={label}
-                  selectAll={selectAll}
-                  handleDeSelect={deSelectAllFnc}
-                  handleSelect={selectAllFnc}
-                />
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {usersData.map((userData) => (
-              <DetailsCard
-                user={userData}
-                selected={selectedArray.includes(userData.id)}
-                HandleEdit={(user) => {
-                  setEditData(user);
-                  handleOpen();
-                }}
-                HandleCheck={(id) => {
-                  selectedIdArray(id);
-                }}
-                HandleDelete={(idArray) => {
-                  deleteUserData(idArray);
-                }}
-                key={userData.id}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+
+      <RecordTable
+        usersData={usersData}
+        selectedArray={selectedArray}
+        setEditData={setEditData}
+        handleOpen={handleOpen}
+        selectedIdArray={selectedIdArray}
+        deleteUserData={deleteUserData}
+        tableHeaders={tableHeaders}
+        selectAll={selectAll}
+        handleDeSelect={deSelectAllFnc}
+        handleSelect={selectAllFnc}
+      />
 
       <UpdateUserModal
         handleClose={handleClose}
