@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 
+import { config } from "../App";
 import DetailsCard from "./DetailsCard";
 import TableHeaderRows from "./TableHeaderRows";
 import ActionButtons from "./ActionButtons";
@@ -104,9 +105,7 @@ export default function UsersDetailsCard() {
 
   const fetchDetails = async () => {
     try {
-      let res = await axios.get(
-        "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
-      );
+      let res = await axios.get(config.endpoint);
       setApiData(res.data);
     } catch (err) {
       enqueueSnackbar(err, {

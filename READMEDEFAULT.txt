@@ -82,3 +82,7 @@ git push -u origin main
 git remote add origin https://github.com/UdayGoel2000/Uday-Admin-UI.git
 git branch -M main
 git push -u origin main
+
+git fetch origin
+git checkout main
+git pull origin main
