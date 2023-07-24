@@ -96,18 +96,8 @@ export default function UsersDetailsCard() {
       start = 0;
       end = 10;
     }
-
-  // const fetchDetails = async () => {
-  //   try {
-  //     let res = await axios.get(config.endpoint);
-  //     setApiData(res.data);
-  //   } catch (err) {
-  //     enqueueSnackbar(err, {
-  //       variant: "error",
-  //     });
-  //   }
-    setUsersData(records.slice(start, end + 1));
-  // };
+    setUsersData(records.slice(start, end));
+  };
 
   const performApiSearch = (text) => {
     let filetredUsers = apiData.filter(
