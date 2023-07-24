@@ -1,5 +1,4 @@
 import { Stack } from "@mui/material";
-import axios from "axios";
 import AppBar from "./AppBar";
 import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import UpdateUserModal from "./UpdateUserModal";
+import useFetch from "../hooks/useFetch";
 
 const tableHeaders = [
   {
@@ -44,7 +44,14 @@ export default function UsersDetailsCard() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [selectedArray, setSelectedArray] = useState([]);
-  const [apiData, setApiData] = useState([]);
+  const [apiData, setApiData] = useFetch(
+    "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json",
+    [],
+    (err) =>
+      enqueueSnackbar(err, {
+        variant: "error",
+      })
+  );
   const [searchText, setSearchText] = useState("");
   const [usersData, setUsersData] = useState([]);
   const [selectedButton, setSelectedButton] = useState("bt_1");
@@ -54,10 +61,6 @@ export default function UsersDetailsCard() {
   const [editData, setEditData] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [buttonArray, setButtonArray] = useState([]);
-
-  useEffect(() => {
-    fetchDetails();
-  }, []);
 
   useEffect(() => {
     let timer;
@@ -73,46 +76,27 @@ export default function UsersDetailsCard() {
     };
   }, [searchText, apiData, selectedButton, selectedArray, selectAll]);
 
-  const pagenation = (dataArray) => {
-    let arr = dataArray;
+  const pagenation = (records) => {
     let btnId = Number(
       selectedButton.substring(selectedButton.indexOf("_") + 1)
     );
-    let TotalRecords = arr.length;
-    let TotalPages = Math.ceil(TotalRecords / 10);
-    const range = (start, end) => {
-      let length = end - start + 1;
-      return Array.from({ length }, (_, idx) => idx + start);
-    };
+
+    let TotalPages = Math.ceil(records.length / 10);
+
+    const range = (start, end) =>
+      Array.from({ length: end - start + 1 }, (_, idx) => idx + start);
+
     setButtonArray(range(1, TotalPages));
     let end = btnId * 10;
     let start = end - 10;
 
-    if (!arr[start]) {
+    if (!records[start]) {
       setSelectedButton("bt_1");
       start = 0;
       end = 10;
     }
-    let newArr = [];
-    for (let i = start; i < end; i++) {
-      if (arr[i]) {
-        newArr.push(arr[i]);
-      }
-    }
-    setUsersData(newArr);
-  };
 
-  const fetchDetails = async () => {
-    try {
-      let res = await axios.get(
-        "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
-      );
-      setApiData(res.data);
-    } catch (err) {
-      enqueueSnackbar(err, {
-        variant: "error",
-      });
-    }
+    setUsersData(records.slice(start, end + 1));
   };
 
   const performApiSearch = (text) => {
