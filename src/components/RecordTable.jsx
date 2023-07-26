@@ -10,7 +10,7 @@ import DetailsCard from "./DetailsCard";
 
 function RecordTable({
   usersData,
-  selectedArray,
+  selectedUsersIdArray,
   setEditData,
   handleOpen,
   selectedIdArray,
@@ -46,7 +46,7 @@ function RecordTable({
           {usersData.map((userData) => (
             <DetailsCard
               user={userData}
-              selected={selectedArray.includes(userData.id)}
+              selected={selectedUsersIdArray.includes(userData.id)}
               HandleEdit={(user) => {
                 setEditData(user);
                 handleOpen();

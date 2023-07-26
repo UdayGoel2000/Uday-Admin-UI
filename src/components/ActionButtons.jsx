@@ -7,11 +7,11 @@ import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 
 function ActionButtons({
-  selectedArray,
+  selectedUsersIdArray,
   handleDelete,
-  selectedButton,
+  selectedButtonId,
   usersData,
-  buttonArray,
+  pagenationButtonArray,
   handleOnClick,
 }) {
   return (
@@ -26,10 +26,10 @@ function ActionButtons({
         <Box pl={2} alignSelf="center">
           <Fab
             variant="extended"
-            color={!selectedArray.length ? "disabled" : "error"}
+            color={!selectedUsersIdArray.length ? "disabled" : "error"}
             size="small"
             onClick={() => {
-              handleDelete(selectedArray);
+              handleDelete(selectedUsersIdArray);
             }}
           >
             <DeleteOutlineIcon size="small" />
@@ -44,7 +44,7 @@ function ActionButtons({
           pr={2}
         >
           <Fab
-            color={selectedButton === "bt_1" ? "disabled" : "primary"}
+            color={selectedButtonId === "bt_1" ? "disabled" : "primary"}
             size="small"
             id="DoubleArrow"
             onClick={(e) => {
@@ -54,21 +54,22 @@ function ActionButtons({
             <KeyboardDoubleArrowLeftOutlinedIcon />
           </Fab>
           <Fab
-            color={selectedButton === "bt_1" ? "disabled" : "primary"}
+            color={selectedButtonId === "bt_1" ? "disabled" : "primary"}
             size="small"
             id="ChevronLeft"
             onClick={(e) => {
-              let btn = "bt_" + (selectedButton[selectedButton.length - 1] - 1);
+              let btn =
+                "bt_" + (selectedButtonId[selectedButtonId.length - 1] - 1);
               handleOnClick(btn);
             }}
           >
             <ChevronLeftOutlinedIcon />
           </Fab>
           <Box id="desktopButton">
-            {buttonArray.map((button) => (
+            {pagenationButtonArray.map((button) => (
               <Fab
                 color={
-                  selectedButton === "bt_" + button ? "secondary" : "primary"
+                  selectedButtonId === "bt_" + button ? "secondary" : "primary"
                 }
                 size="small"
                 id={`bt_${button}`}
@@ -83,7 +84,8 @@ function ActionButtons({
           </Box>
           <Fab
             color={
-              selectedButton === "bt_" + buttonArray[buttonArray.length - 1]
+              selectedButtonId ===
+              "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
                 ? "disabled"
                 : usersData.length
                 ? "primary"
@@ -93,7 +95,8 @@ function ActionButtons({
             id="ChevronRight"
             onClick={(e) => {
               let btn =
-                "bt_" + (Number(selectedButton[selectedButton.length - 1]) + 1);
+                "bt_" +
+                (Number(selectedButtonId[selectedButtonId.length - 1]) + 1);
               handleOnClick(btn);
             }}
           >
@@ -101,7 +104,8 @@ function ActionButtons({
           </Fab>
           <Fab
             color={
-              selectedButton === "bt_" + buttonArray[buttonArray.length - 1]
+              selectedButtonId ===
+              "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
                 ? "disabled"
                 : usersData.length
                 ? "primary"
@@ -110,7 +114,9 @@ function ActionButtons({
             size="small"
             id="DoubleArrow"
             onClick={(e) => {
-              handleOnClick("bt_" + buttonArray[buttonArray.length - 1]);
+              handleOnClick(
+                "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
+              );
             }}
           >
             <KeyboardDoubleArrowRightOutlinedIcon />
@@ -125,10 +131,10 @@ function ActionButtons({
       >
         <Box sx={{ display: "inline-block" }}>
           <Fab
-            color={!selectedArray.length ? "disabled" : "error"}
+            color={!selectedUsersIdArray.length ? "disabled" : "error"}
             size="small"
             onClick={() => {
-              handleDelete(selectedArray);
+              handleDelete(selectedUsersIdArray);
             }}
           >
             <DeleteOutlineIcon size="small" />
@@ -142,7 +148,7 @@ function ActionButtons({
           alignItems="center"
         >
           <Fab
-            color={selectedButton === "bt_1" ? "disabled" : "primary"}
+            color={selectedButtonId === "bt_1" ? "disabled" : "primary"}
             size="small"
             id="DoubleArrow"
             onClick={(e) => {
@@ -152,11 +158,12 @@ function ActionButtons({
             <KeyboardDoubleArrowLeftOutlinedIcon />
           </Fab>
           <Fab
-            color={selectedButton === "bt_1" ? "disabled" : "primary"}
+            color={selectedButtonId === "bt_1" ? "disabled" : "primary"}
             size="small"
             id="ChevronLeft"
             onClick={(e) => {
-              let btn = "bt_" + (selectedButton[selectedButton.length - 1] - 1);
+              let btn =
+                "bt_" + (selectedButtonId[selectedButtonId.length - 1] - 1);
               handleOnClick(btn);
             }}
           >
@@ -164,11 +171,13 @@ function ActionButtons({
           </Fab>
           <Chip
             label={
-              buttonArray.length
+              pagenationButtonArray.length
                 ? "Page " +
-                  selectedButton.substring(selectedButton.indexOf("_") + 1) +
+                  selectedButtonId.substring(
+                    selectedButtonId.indexOf("_") + 1
+                  ) +
                   " / " +
-                  buttonArray[buttonArray.length - 1]
+                  pagenationButtonArray[pagenationButtonArray.length - 1]
                 : "Page 0 / 0"
             }
             color="primary"
@@ -176,7 +185,8 @@ function ActionButtons({
           />
           <Fab
             color={
-              selectedButton === "bt_" + buttonArray[buttonArray.length - 1]
+              selectedButtonId ===
+              "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
                 ? "disabled"
                 : "primary"
             }
@@ -184,7 +194,8 @@ function ActionButtons({
             id="ChevronRight"
             onClick={(e) => {
               let btn =
-                "bt_" + (Number(selectedButton[selectedButton.length - 1]) + 1);
+                "bt_" +
+                (Number(selectedButtonId[selectedButtonId.length - 1]) + 1);
               handleOnClick(btn);
             }}
           >
@@ -192,14 +203,17 @@ function ActionButtons({
           </Fab>
           <Fab
             color={
-              selectedButton === "bt_" + buttonArray[buttonArray.length - 1]
+              selectedButtonId ===
+              "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
                 ? "disabled"
                 : "primary"
             }
             size="small"
             id="DoubleArrow"
             onClick={(e) => {
-              handleOnClick("bt_" + buttonArray[buttonArray.length - 1]);
+              handleOnClick(
+                "bt_" + pagenationButtonArray[pagenationButtonArray.length - 1]
+              );
             }}
           >
             <KeyboardDoubleArrowRightOutlinedIcon />

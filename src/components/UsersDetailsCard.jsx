@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import AppBar from "./AppBar";
 import SearchBar from "./SearchBar";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useSnackbar } from "notistack";
 
 import ActionButtons from "./ActionButtons";
@@ -36,7 +36,29 @@ const tableHeaders = [
 export default function UsersDetailsCard() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const [selectedArray, setSelectedArray] = useState([]);
+  const [
+    {
+      selectedUsersIdArray,
+      searchText,
+      openModal,
+      selectAll,
+      pagenationButtonArray,
+      selectedButtonId,
+      usersData,
+      editData,
+    },
+    setState,
+  ] = useReducer((state, newState) => ({ ...state, ...newState }), {
+    selectedUsersIdArray: [],
+    searchText: "",
+    openModal: false,
+    selectAll: false,
+    pagenationButtonArray: [],
+    selectedButtonId: "bt_1",
+    usersData: [],
+    editData: {},
+  });
+
   const [apiData, setApiData] = useFetch(
     "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json",
     [],
@@ -45,17 +67,10 @@ export default function UsersDetailsCard() {
         variant: "error",
       })
   );
-  const [searchText, setSearchText] = useState("");
-  const [usersData, setUsersData] = useState([]);
-  const [selectedButton, setSelectedButton] = useState("bt_1");
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [editData, setEditData] = useState({});
-  const [selectAll, setSelectAll] = useState(false);
-  const [buttonArray, setButtonArray] = useState([]);
 
   useEffect(() => {
+    setState({ selectAll: false });
+    setState({ selectedUsersIdArray: [] });
     let timer;
     if (searchText) {
       timer = setTimeout(() => {
@@ -67,11 +82,11 @@ export default function UsersDetailsCard() {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchText, apiData, selectedButton, selectedArray, selectAll]);
+  }, [searchText, apiData, selectedButtonId]);
 
   const pagenation = (records) => {
     let btnId = Number(
-      selectedButton.substring(selectedButton.indexOf("_") + 1)
+      selectedButtonId.substring(selectedButtonId.indexOf("_") + 1)
     );
 
     let TotalPages = Math.ceil(records.length / 10);
@@ -79,16 +94,16 @@ export default function UsersDetailsCard() {
     const range = (start, end) =>
       Array.from({ length: end - start + 1 }, (_, idx) => idx + start);
 
-    setButtonArray(range(1, TotalPages));
+    setState({ pagenationButtonArray: range(1, TotalPages) });
     let end = btnId * 10;
     let start = end - 10;
 
     if (!records[start]) {
-      setSelectedButton("bt_1");
+      setState({ selectedButtonId: "bt_1" });
       start = 0;
       end = 10;
     }
-    setUsersData(records.slice(start, end));
+    setState({ usersData: records.slice(start, end) });
   };
 
   const performApiSearch = (text) => {
@@ -107,61 +122,66 @@ export default function UsersDetailsCard() {
   };
 
   const selectedIdArray = (id) => {
-    let arr = [...selectedArray];
+    let arr = [...selectedUsersIdArray];
     if (arr.includes(id)) {
-      setSelectedArray(arr.filter((ele) => ele !== id));
-      setSelectAll(false);
+      setState({ selectedUsersIdArray: arr.filter((ele) => ele !== id) });
+      setState({ selectAll: false });
     } else {
       arr.push(id);
-      setSelectedArray(arr);
-      if (arr.length === usersData.length) setSelectAll(true);
-      else setSelectAll(false);
+      setState({ selectedUsersIdArray: arr });
+      if (arr.length === usersData.length) setState({ selectAll: true });
+      else setState({ selectAll: false });
     }
   };
 
-  const deleteUserData = (selectedArray) => {
-    if (!selectedArray.length) return;
+  const deleteUserData = (selectedUsersIdArray) => {
+    if (!selectedUsersIdArray.length) return;
 
-    setSelectedArray([]);
-    setSelectAll(false);
-    setApiData(apiData.filter(({ id }) => !selectedArray.includes(id)));
+    setApiData(apiData.filter(({ id }) => !selectedUsersIdArray.includes(id)));
+    setState({ selectedUsersIdArray: [] });
+    setState({ selectAll: false });
   };
 
   const editUserDetails = (data) => {
     setApiData(apiData.map((ele) => (ele.id === data.id ? data : ele)));
-    handleClose();
+    setState({ openModal: false });
   };
 
   const selectAllFnc = () => {
-    setSelectedArray(usersData.map((userData) => userData.id));
-    setSelectAll(true);
+    setState({
+      selectedUsersIdArray: usersData.map((userdata) => userdata.id),
+    });
+    setState({ selectAll: true });
   };
 
   const deSelectAllFnc = () => {
-    setSelectedArray([]);
-    setSelectAll(false);
+    setState({ selectedUsersIdArray: [] });
+    setState({ selectAll: false });
   };
 
   const handleChange = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+    setState({ editData: { ...editData, [e.target.name]: e.target.value } });
   };
 
   const handleOnClick = (button_id) => {
-    setSelectAll(false);
-    setSelectedArray([]);
-    setSelectedButton(button_id);
+    setState({ selectAll: false });
+    setState({ selectedUsersIdArray: [] });
+    setState({ selectedButtonId: button_id });
   };
 
   return (
     <Stack>
       <AppBar />
-      <SearchBar value={searchText} changeValue={setSearchText} />
+      <SearchBar
+        value={searchText}
+        changeValue={(searchedValue) => setState({ searchText: searchedValue })}
+      />
 
       <RecordTable
         usersData={usersData}
-        selectedArray={selectedArray}
-        setEditData={setEditData}
-        handleOpen={handleOpen}
+        selectedUsersIdArray={selectedUsersIdArray}
+        setEditData={(data) => setState({ editData: data })}
+        handleOpen={() => setState({ openModal: true })}
         selectedIdArray={selectedIdArray}
         deleteUserData={deleteUserData}
         tableHeaders={tableHeaders}
@@ -171,18 +191,18 @@ export default function UsersDetailsCard() {
       />
 
       <UpdateUserModal
-        handleClose={handleClose}
-        open={open}
+        handleClose={() => setState({ openModal: false })}
+        openModal={openModal}
         editData={editData}
         handleChange={handleChange}
         editUserDetails={editUserDetails}
       />
 
       <ActionButtons
-        selectedArray={selectedArray}
+        selectedUsersIdArray={selectedUsersIdArray}
         handleDelete={deleteUserData}
-        selectedButton={selectedButton}
-        buttonArray={buttonArray}
+        selectedButtonId={selectedButtonId}
+        pagenationButtonArray={pagenationButtonArray}
         handleOnClick={(button_id) => handleOnClick(button_id)}
         usersData={usersData}
       />

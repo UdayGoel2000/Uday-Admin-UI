@@ -25,14 +25,14 @@ const style = {
 
 function UpdateUserModal({
   handleClose,
-  open,
+  openModal,
   editData,
   editUserDetails,
   handleChange,
 }) {
   return (
-    <Modal handleClose={handleClose} open={open}>
-      <Fade in={open}>
+    <Modal handleClose={handleClose} open={openModal}>
+      <Fade in={openModal}>
         <Box
           sx={style}
           display="flex"
