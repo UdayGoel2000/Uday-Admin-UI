@@ -4,7 +4,8 @@ import SearchBar from "./SearchBar";
 import { useEffect, useReducer } from "react";
 import { useSnackbar } from "notistack";
 
-import ActionButtons from "./ActionButtons";
+import DesktopActionButtons from "./DesktopActionButtons";
+import MobileActionButtons from "./MobileActionButtons";
 
 import UpdateUserModal from "./UpdateUserModal";
 import useFetch from "../hooks/useFetch";
@@ -33,7 +34,7 @@ const tableHeaders = [
   },
 ];
 
-export default function UsersDetailsCard() {
+export default function AdminHomePage() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [
@@ -45,7 +46,7 @@ export default function UsersDetailsCard() {
       pagenationButtonArray,
       selectedButtonId,
       usersData,
-      editData,
+      userModalData,
     },
     setState,
   ] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -56,7 +57,7 @@ export default function UsersDetailsCard() {
     pagenationButtonArray: [],
     selectedButtonId: "bt_1",
     usersData: [],
-    editData: {},
+    userModalData: {},
   });
 
   const [apiData, setApiData] = useFetch(
@@ -69,8 +70,7 @@ export default function UsersDetailsCard() {
   );
 
   useEffect(() => {
-    setState({ selectAll: false });
-    setState({ selectedUsersIdArray: [] });
+    setState({ selectAll: false, selectedUsersIdArray: [] });
     let timer;
     if (searchText) {
       timer = setTimeout(() => {
@@ -124,13 +124,16 @@ export default function UsersDetailsCard() {
   const selectedIdArray = (id) => {
     let arr = [...selectedUsersIdArray];
     if (arr.includes(id)) {
-      setState({ selectedUsersIdArray: arr.filter((ele) => ele !== id) });
-      setState({ selectAll: false });
+      setState({
+        selectedUsersIdArray: arr.filter((ele) => ele !== id),
+        selectAll: false,
+      });
     } else {
       arr.push(id);
-      setState({ selectedUsersIdArray: arr });
-      if (arr.length === usersData.length) setState({ selectAll: true });
-      else setState({ selectAll: false });
+      setState({
+        selectedUsersIdArray: arr,
+        selectAll: arr.length === usersData.length,
+      });
     }
   };
 
@@ -138,8 +141,7 @@ export default function UsersDetailsCard() {
     if (!selectedUsersIdArray.length) return;
 
     setApiData(apiData.filter(({ id }) => !selectedUsersIdArray.includes(id)));
-    setState({ selectedUsersIdArray: [] });
-    setState({ selectAll: false });
+    setState({ selectedUsersIdArray: [], selectAll: false });
   };
 
   const editUserDetails = (data) => {
@@ -150,23 +152,26 @@ export default function UsersDetailsCard() {
   const selectAllFnc = () => {
     setState({
       selectedUsersIdArray: usersData.map((userdata) => userdata.id),
+      selectAll: true,
     });
-    setState({ selectAll: true });
   };
 
   const deSelectAllFnc = () => {
-    setState({ selectedUsersIdArray: [] });
-    setState({ selectAll: false });
+    setState({ selectedUsersIdArray: [], selectAll: false });
   };
 
   const handleChange = (e) => {
-    setState({ editData: { ...editData, [e.target.name]: e.target.value } });
+    setState({
+      userModalData: { ...userModalData, [e.target.name]: e.target.value },
+    });
   };
 
   const handleOnClick = (button_id) => {
-    setState({ selectAll: false });
-    setState({ selectedUsersIdArray: [] });
-    setState({ selectedButtonId: button_id });
+    setState({
+      selectAll: false,
+      selectedUsersIdArray: [],
+      selectedButtonId: button_id,
+    });
   };
 
   return (
@@ -180,7 +185,7 @@ export default function UsersDetailsCard() {
       <RecordTable
         usersData={usersData}
         selectedUsersIdArray={selectedUsersIdArray}
-        setEditData={(data) => setState({ editData: data })}
+        setUserModalData={(data) => setState({ userModalData: data })}
         handleOpen={() => setState({ openModal: true })}
         selectedIdArray={selectedIdArray}
         deleteUserData={deleteUserData}
@@ -193,12 +198,20 @@ export default function UsersDetailsCard() {
       <UpdateUserModal
         handleClose={() => setState({ openModal: false })}
         openModal={openModal}
-        editData={editData}
+        userModalData={userModalData}
         handleChange={handleChange}
         editUserDetails={editUserDetails}
       />
 
-      <ActionButtons
+      <DesktopActionButtons
+        selectedUsersIdArray={selectedUsersIdArray}
+        handleDelete={deleteUserData}
+        selectedButtonId={selectedButtonId}
+        pagenationButtonArray={pagenationButtonArray}
+        handleOnClick={(button_id) => handleOnClick(button_id)}
+        usersData={usersData}
+      />
+      <MobileActionButtons
         selectedUsersIdArray={selectedUsersIdArray}
         handleDelete={deleteUserData}
         selectedButtonId={selectedButtonId}

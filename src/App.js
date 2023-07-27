@@ -1,10 +1,10 @@
-import UsersDetailsCard from "./components/UsersDetailsCard";
+import AdminHomePage from "./components/AdminHomePage";
 import "./style.css";
 
 export default function App() {
   return (
     <div className="App">
-      <UsersDetailsCard />
+      <AdminHomePage />
     </div>
   );
 }
