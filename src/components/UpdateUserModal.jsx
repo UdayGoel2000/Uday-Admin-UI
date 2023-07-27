@@ -25,14 +25,14 @@ const style = {
 
 function UpdateUserModal({
   handleClose,
-  open,
-  editData,
+  openModal,
+  userModalData,
   editUserDetails,
   handleChange,
 }) {
   return (
-    <Modal handleClose={handleClose} open={open}>
-      <Fade in={open}>
+    <Modal handleClose={handleClose} open={openModal}>
+      <Fade in={openModal}>
         <Box
           sx={style}
           display="flex"
@@ -51,7 +51,7 @@ function UpdateUserModal({
             <TextField
               size="small"
               variant="outlined"
-              value={editData.name}
+              value={userModalData.name}
               name="name"
               onChange={handleChange}
             />
@@ -66,7 +66,7 @@ function UpdateUserModal({
             <TextField
               size="small"
               variant="outlined"
-              value={editData.email}
+              value={userModalData.email}
               name="email"
               onChange={handleChange}
             />
@@ -80,7 +80,7 @@ function UpdateUserModal({
             <Typography pr={2}>Role</Typography>
             <Select
               size="small"
-              value={editData.role}
+              value={userModalData.role}
               name="role"
               onChange={handleChange}
             >
@@ -94,7 +94,7 @@ function UpdateUserModal({
               color="primary"
               size="small"
               onClick={() => {
-                editUserDetails(editData);
+                editUserDetails(userModalData);
               }}
             >
               <UpgradeOutlinedIcon />

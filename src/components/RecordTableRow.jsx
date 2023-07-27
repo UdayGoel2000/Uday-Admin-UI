@@ -5,12 +5,12 @@ import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
 import { Box, Button, ButtonGroup } from "@mui/material";
 
-export default function DetailsCard({
+export default function RecordTableRow({
   user,
   selected,
-  HandleCheck,
-  HandleEdit,
-  HandleDelete,
+  handleCheck,
+  handleEdit,
+  handleDelete,
 }) {
   const { id, name, email, role } = user;
   return (
@@ -20,7 +20,7 @@ export default function DetailsCard({
           type="checkbox"
           checked={selected}
           onChange={() => {
-            HandleCheck(id);
+            handleCheck(id);
           }}
         />
       </TableCell>
@@ -35,7 +35,7 @@ export default function DetailsCard({
               startIcon={<EditNoteOutlinedIcon />}
               variant="text"
               onClick={() => {
-                HandleEdit(user);
+                handleEdit(user);
               }}
             />
           </ButtonGroup>
@@ -47,7 +47,7 @@ export default function DetailsCard({
               variant="text"
               color="error"
               onClick={() => {
-                HandleDelete([id]);
+                handleDelete([id]);
               }}
             />
           </ButtonGroup>

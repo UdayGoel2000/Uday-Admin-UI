@@ -86,3 +86,6 @@ git push -u origin main
 git fetch origin
 git checkout main
 git pull origin main
+
+git checkout -b hookChanges
+git push -u origin hookChanges

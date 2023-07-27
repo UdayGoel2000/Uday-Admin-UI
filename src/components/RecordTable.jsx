@@ -6,12 +6,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TableCell } from "@mui/material";
-import DetailsCard from "./DetailsCard";
+import RecordTableRow from "./RecordTableRow";
 
 function RecordTable({
   usersData,
-  selectedArray,
-  setEditData,
+  selectedUsersIdArray,
+  setUserModalData,
   handleOpen,
   selectedIdArray,
   deleteUserData,
@@ -44,17 +44,17 @@ function RecordTable({
         </TableHead>
         <TableBody>
           {usersData.map((userData) => (
-            <DetailsCard
+            <RecordTableRow
               user={userData}
-              selected={selectedArray.includes(userData.id)}
-              HandleEdit={(user) => {
-                setEditData(user);
+              selected={selectedUsersIdArray.includes(userData.id)}
+              handleEdit={(user) => {
+                setUserModalData(user);
                 handleOpen();
               }}
-              HandleCheck={(id) => {
+              handleCheck={(id) => {
                 selectedIdArray(id);
               }}
-              HandleDelete={(idArray) => {
+              handleDelete={(idArray) => {
                 deleteUserData(idArray);
               }}
               key={userData.id}
